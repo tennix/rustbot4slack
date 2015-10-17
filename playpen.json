@@ -1,0 +1,8 @@
+{
+    "code": "fn main() { println!(\"Hello, world!\"); }",
+    "test": false,
+    "color": false,
+    "separate_output": true,
+    "version": "stable",
+    "optimize": "0"
+}
