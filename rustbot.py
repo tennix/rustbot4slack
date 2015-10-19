@@ -43,7 +43,10 @@ class RustBot(object):
         while True:
             for event in self.slack_client.rtm_read():
                 if event.get('type') == 'message' and event.get('text'):
-                    channel, text, user = event['channel'], event['text'], event['user']
+                    try:
+                        channel, text, user = event['channel'], event['text'], event['user']
+                    except KeyError:
+                        continue
                     text = html.unescape(text.strip())
                     if text.startswith('<@{}>'.format(self.uid)) or text.startswith(botname):
                         print(event)
@@ -115,7 +118,7 @@ class RustBot(object):
 
     def evaluate(self, code, version='stable'):
         playpen['code'] = code
-        r = requests.post(api['playpen'], json=playpen, timeout=5)
+        r = requests.post(api['playpen'], json=playpen)
         json_data = json.loads(r.text)
         if json_data.get('rustc'): # error
             url = self.share(code)
